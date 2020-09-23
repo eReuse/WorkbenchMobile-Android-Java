@@ -1,0 +1,16 @@
+<resources>
+    <color name="background">#7E7E7E</color>
+
+    <string name="app_name">eReuse app</string>
+    <string name="manufacturer">Manufacturer: Undefined</string>
+    <string name="model">Model: Undefined</string>
+    <string name="serial_number">Serial Number: Undefined</string>
+    <string name="display_size">Display Size: Undefined</string>
+    <string name="ram_size">RAM Size: Undefined</string>
+    <string name="data_storage">Data Storage: Undefined</string>
+    <string name="imei">IMEI: Undefined</string>
+    <string name="meid">MEID: Undefined</string>
+    <string name="post_req">JSON sent: False</string>
+
+    <string name="read_device">Read Device</string>
+</resources>

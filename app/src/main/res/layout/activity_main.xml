@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/manufacturer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/manufacturer"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/model"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/serial_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/serial_number"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/display_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/display_size"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/ram_size"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/ram_size"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/data_storage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/data_storage"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/imei"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/imei"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/meid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/meid"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/req_sent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="@string/post_req"
+        android:textColor="@android:color/white" />
+
+    <View android:layout_weight="1" android:layout_height="0dp" android:layout_width="0dp" />
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:onClick="getDeviceName"
+        android:text="@string/read_device"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498" />
+
+</LinearLayout>
