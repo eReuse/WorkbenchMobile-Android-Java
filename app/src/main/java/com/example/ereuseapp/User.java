@@ -1,6 +1,8 @@
 package com.example.ereuseapp;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONObject;
 
@@ -9,14 +11,16 @@ import java.util.Map;
 import java.util.Vector;
 
 public class User {
-    private String software;
-    private String version;
+
+    //@Expose
+    private Map<String, String> device;
     private String type;
     private String uuid;
-    private Map<String, String> device;
+    private String software;
+    private String version;
 
-    public User (String software, String version, String type, String uuid,
-                      Map<String, String> device){
+
+    public User (String type, Map<String, String> device, String uuid, String software, String version){
         this.software = software;
         this.version = version;
         this.type = type;

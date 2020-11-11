@@ -90,12 +90,22 @@
 
     <View android:layout_weight="1" android:layout_height="0dp" android:layout_width="0dp" />
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_read"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/black"
         android:onClick="getDeviceName"
         android:text="@string/read_device"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.498" />
+    <Button
+        android:id="@+id/button_snapshot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:onClick="sendSnapshot"
+        android:text="@string/send_snapshot"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.498" />

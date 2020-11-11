@@ -13,4 +13,5 @@
     <string name="post_req">JSON sent: False</string>
 
     <string name="read_device">Read Device</string>
+    <string name="send_snapshot">Send Snapshot</string>
 </resources>
