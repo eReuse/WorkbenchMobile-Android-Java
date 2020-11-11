@@ -1,52 +1,33 @@
 package com.example.ereuseapp;
 
+import android.app.ActivityManager;
 import android.os.Bundle;
-//import android.support.v7.app.AppCompatActivity;
+import android.telephony.TelephonyManager;
 import android.view.View;
 
-import com.example.ereuseapp.R;
 
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Build;
-import 	android.app.ActivityManager.MemoryInfo;
-
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Context;
-import android.app.Activity;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-import org.json.JSONException;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
+
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-import java.lang.reflect.Method;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-import java.net.HttpURLConnection;
-import java.lang.Object;
-import java.time.LocalDateTime;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -57,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Vector<TextView> device_info = new Vector();
     private Vector<String> device_info_print = new Vector();
     private String Serial;
-    static final int MY_PERMISSIONS_REQUEST_INTERNET = 130;
 
 
 
@@ -84,8 +64,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.button_read:
 
+                //display info
                 device_info_print.add("Manufacturer: " + Build.MANUFACTURER);
                 device_info_print.add("Model: " + Build.MODEL);
+                device_info_print.add("Serial Number: " + "Unknown"/*Build.getSerial()*/);
+                device_info_print.add("RAM Size: " + getRam());
+                device_info_print.add("IMEI: " + getIMEI());
+
+                device_info_print.add("MEID: Undefined");
+                device_info_print.add("Display Size: Undefined" /*get info from android studio */ );
+                device_info_print.add("dataStorageSize: Undefined" );
+
+                for (int i = 0; i < device_info.size(); ++i)
+                    if (device_info.get(i) != null)
+                        device_info.get(i).setText(device_info_print.get(i));
+                break;
+
                 //int request_code = 1;
                  /* ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_PHONE_STATE},
@@ -107,43 +101,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         //device_info_print.add("JSON made: False");
                 }*/
 
-                //get info
-                device_info_print.add("Serial Number: " + Serial);
-                device_info_print.add("Display Size: Undefined" /*get info from android studio */ );
-                device_info_print.add("RAM Size: Undefined" /*PARAM FROM ACTIVITY MANAGER */);
-                device_info_print.add("dataStorageSize: Undefined" );
-                device_info_print.add("IMEI: Undefined");
-                device_info_print.add("MEID: Undefined");
-
-                for (int i = 0; i < device_info.size(); ++i)
-                    if (device_info.get(i) != null)
-                        device_info.get(i).setText(device_info_print.get(i));
-                break;
-
             case R.id.button_snapshot:
-                //values of JSON
+
+                Random rand = new Random();
+
+                ////////values of JSON//////////
                 String software = "WorkbenchAndroid";
                 String version = "0.0.1";
                 String type = "Snapshot";
-                String uuid = "240035a1-d400-4111-a413-ef79017156e1";
+                String uuid = String.valueOf(rand.nextInt(1000000));
 
-                //device map values
+                //dummy values
                 String typemobile = "Mobile";
-                String manufacturer = "Samsung";
-                String model = "gt-19505";
+                //String manufacturer = "Samsung";
+                //String model = "gt-19505";
                 String serialNumber = "serialNumber";
-                String ramSize = "2048";
+                //String ramSize = "2048";
                 String dataStorageSize = "16384";
                 String displaySize = "5";
-
 
                 //mapping device
                 Map<String,String> device = new HashMap<String,String>();
                 device.put("serialNumber",serialNumber);
-                device.put("model",model);
-                device.put("manufacturer",manufacturer);
+                device.put("model",Build.MODEL);
+                device.put("manufacturer",Build.MANUFACTURER);
                 device.put("type",typemobile);
-                device.put("ramSize",ramSize);
+                device.put("ramSize",getRam());
                 device.put("dataStorageSize",dataStorageSize);
                 device.put("displaySize",displaySize);
 
@@ -152,7 +135,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //create Json
                 Gson gsonObj = new Gson();
                 String json = gsonObj.toJson(user);
+
+                //send JSON to the interface
                 executeSendJSON(json);
+
                 //Testing JSON format
               /*JSONObject usertest = new JSONObject();
                 try {
@@ -162,27 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 Log.i("Current JSON",json);*/
 
-//////////////////////////////////////////////////////////////
-                /*MainApplication.apiManager.sendUser(user, new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.body() != null) {
-                            User responseUser = response.body();
-                            if (response.isSuccessful() && responseUser != null) {
-                                Toast.makeText(MainActivity.this, "Device added to database", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(MainActivity.this, String.format("Response is %s", String.valueOf(response.code())),
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "Error" + t.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });*/
-
                 break;
         }
     }
@@ -190,13 +155,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void executeSendJSON(String json) {
 
+        //build
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://api.testing.usody.com/usodybeta/")
                 .build();
         AppClient appClient = retrofit.create(AppClient.class);
+
         Call<Void> call = appClient.sendJson(json);
+
         //get response
         call.enqueue(new Callback<Void>() {
             @Override
@@ -211,4 +179,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    public static String getRam() {
+        Context context = ContextApp.getContext();
+
+        ActivityManager actManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
+        actManager.getMemoryInfo(memInfo);
+        long totalMemory = memInfo.totalMem;
+        return Long.toString(totalMemory);
+    }
+
+    public String getIMEI(){
+        Context context = ContextApp.getContext();
+        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        return telephonyManager.getDeviceId();
+    }
 }
