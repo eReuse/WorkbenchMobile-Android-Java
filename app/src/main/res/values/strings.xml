@@ -10,7 +10,6 @@
     <string name="display_size">Display Size: Undefined</string>
     <string name="ram_size">RAM Size: Undefined</string>
     <string name="data_storage">Data Storage: Undefined</string>
-    <string name="post_req">JSON sent: False</string>
 
     <string name="read_device">Read Device</string>
     <string name="send_snapshot">Send Snapshot</string>

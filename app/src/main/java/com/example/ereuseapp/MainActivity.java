@@ -61,9 +61,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         device_info.addElement((TextView) findViewById(R.id.uuid));
         device_info.addElement((TextView) findViewById(R.id.manufacturer));
         device_info.addElement((TextView) findViewById(R.id.model));
-        device_info.addElement((TextView) findViewById(R.id.req_sent));
         device_info.addElement((TextView) findViewById(R.id.mac_address));
-
+        device_info.addElement((TextView) findViewById(R.id.ram_size));
+        device_info.addElement((TextView) findViewById(R.id.display_size));
+        device_info.addElement((TextView) findViewById(R.id.data_storage));
         button_snapshot.setOnClickListener(this);
 
         //read phone info
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         device_info_print.add("RAM Size: " + getRam()+ " GB");
 
         device_info_print.add("Display Size: " + getScreenWidth() +"x"+ getScreenHeight());
-        device_info_print.add("dataStorageSize: Undefined" );
+
+        device_info_print.add("Data Storage: Undefined" );
 
         for (int i = 0; i < device_info.size(); ++i)
             if (device_info.get(i) != null)

@@ -70,14 +70,6 @@
         android:layout_marginBottom="5dp"
         />
 
-    <TextView
-        android:id="@+id/req_sent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:text="@string/serial_number"
-        android:textColor="@android:color/white" />
-
     <View android:layout_weight="1" android:layout_height="0dp" android:layout_width="0dp" />
 
     <Button
