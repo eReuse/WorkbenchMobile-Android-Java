@@ -9,6 +9,15 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/uuid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/uuid"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
         android:id="@+id/manufacturer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,6 +32,14 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:text="@string/model"
+        android:layout_marginBottom="5dp"
+        />
+    <TextView
+        android:id="@+id/mac_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="@string/mac_address"
         android:layout_marginBottom="5dp"
         />
 
@@ -54,24 +71,6 @@
         />
 
     <TextView
-        android:id="@+id/imei"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:text="@string/imei"
-        android:layout_marginBottom="5dp"
-        />
-
-    <TextView
-        android:id="@+id/meid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:text="@string/meid"
-        android:layout_marginBottom="5dp"
-        />
-
-    <TextView
         android:id="@+id/req_sent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,16 +79,7 @@
         android:textColor="@android:color/white" />
 
     <View android:layout_weight="1" android:layout_height="0dp" android:layout_width="0dp" />
-    <Button
-        android:id="@+id/button_read"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/black"
-        android:onClick="getDeviceName"
-        android:text="@string/read_device"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.498" />
+
     <Button
         android:id="@+id/button_snapshot"
         android:layout_width="match_parent"

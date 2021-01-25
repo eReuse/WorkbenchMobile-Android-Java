@@ -47,4 +47,5 @@ public class User {
     public Map<String,String> getDevice() {
         return device;
     }
+
 }

@@ -1,8 +1,12 @@
 package com.example.ereuseapp;
 
 import android.app.ActivityManager;
+import android.content.res.Resources;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 
 
@@ -24,8 +28,13 @@ import retrofit2.Callback;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 
+import java.io.IOException;
+import java.net.NetworkInterface;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Vector;
 import java.util.Random;
 
@@ -39,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Vector<String> device_info_print = new Vector();
     private String Serial;
 
+    final String uuid = UUID.randomUUID().toString();
 
 
     @Override
@@ -47,82 +57,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         button_snapshot = findViewById(R.id.button_snapshot);
-        button_read = findViewById(R.id.button_read);
 
+        device_info.addElement((TextView) findViewById(R.id.uuid));
         device_info.addElement((TextView) findViewById(R.id.manufacturer));
         device_info.addElement((TextView) findViewById(R.id.model));
         device_info.addElement((TextView) findViewById(R.id.req_sent));
+        device_info.addElement((TextView) findViewById(R.id.mac_address));
 
         button_snapshot.setOnClickListener(this);
-        button_read.setOnClickListener(this);
+
+        //read phone info
+        device_info_print.add("UUID: " + uuid);
+        device_info_print.add("Manufacturer: " + Build.MANUFACTURER);
+        device_info_print.add("Model: " + Build.MODEL);
+
+        String macAddress = getMacAddr();
+        device_info_print.add("MAC Adress: " + macAddress);
+
+        //device_info_print.add("Serial Number: " );
+        device_info_print.add("RAM Size: " + getRam()+ " GB");
+
+        device_info_print.add("Display Size: " + getScreenWidth() +"x"+ getScreenHeight());
+        device_info_print.add("dataStorageSize: Undefined" );
+
+        for (int i = 0; i < device_info.size(); ++i)
+            if (device_info.get(i) != null)
+                device_info.get(i).setText(device_info_print.get(i));
+
 
 //        Log.d("getDeviceName", Integer.toString(device_info.size()));
     }
 
+
+
     @Override
     public void onClick(View view){
         switch (view.getId()) {
-            case R.id.button_read:
-
-                //display info
-                device_info_print.add("Manufacturer: " + Build.MANUFACTURER);
-                device_info_print.add("Model: " + Build.MODEL);
-                device_info_print.add("Serial Number: " + "Unknown"/*Build.getSerial()*/);
-                device_info_print.add("RAM Size: " + getRam());
-                device_info_print.add("IMEI: " + getIMEI());
-
-                device_info_print.add("MEID: Undefined");
-                device_info_print.add("Display Size: Undefined" /*get info from android studio */ );
-                device_info_print.add("dataStorageSize: Undefined" );
-
-                for (int i = 0; i < device_info.size(); ++i)
-                    if (device_info.get(i) != null)
-                        device_info.get(i).setText(device_info_print.get(i));
-                break;
-
-                //int request_code = 1;
-                 /* ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_PHONE_STATE},
-                        request_code);
-                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED)
-                    if ( Build.VERSION.SDK_INT >= 26) Serial = Build.getSerial();
-                    else; //buscar serial api pre 26
-                else Serial = "Undefined";*/
-
-                //get internet access
-                /*int internet_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
-                switch (internet_permission) {
-                    case PackageManager.PERMISSION_GRANTED:
-                        device_info_print.add("JSON made: True");
-                        break;
-                    default:
-                        ActivityCompat.requestPermissions(
-                                this, new String[]{Manifest.permission.INTERNET}, MY_PERMISSIONS_REQUEST_INTERNET);
-                        //device_info_print.add("JSON made: False");
-                }*/
-
+            //taking snapshot button
             case R.id.button_snapshot:
-
-                Random rand = new Random();
 
                 ////////values of JSON//////////
                 String software = "WorkbenchAndroid";
-                String version = "0.0.1";
+                String version = "0.0.2";
                 String type = "Snapshot";
-                String uuid = String.valueOf(rand.nextInt(1000000));
 
                 //dummy values
                 String typemobile = "Mobile";
                 //String manufacturer = "Samsung";
                 //String model = "gt-19505";
-                String serialNumber = "serialNumber";
+                //String serialNumber = "serialNumber";
                 //String ramSize = "2048";
                 String dataStorageSize = "16384";
                 String displaySize = "5";
+                String macAddress = getMacAddr();
 
                 //mapping device
                 Map<String,String> device = new HashMap<String,String>();
-                device.put("serialNumber",serialNumber);
+                device.put("serialNumber",macAddress);
                 device.put("model",Build.MODEL);
                 device.put("manufacturer",Build.MANUFACTURER);
                 device.put("type",typemobile);
@@ -169,14 +160,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(MainActivity.this, "Connection to database successful", Toast.LENGTH_LONG).show();
+                if (response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, "Data sent!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    try {
+                        Toast.makeText(MainActivity.this, "Server returned error: " + response.errorBody().string(), Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(MainActivity.this, String.format("Response is wrong", Toast.LENGTH_LONG),
+                Toast.makeText(MainActivity.this, String.format("Not able to connect to server", Toast.LENGTH_LONG),
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+
+
+    public static String getMacAddr() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif: all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b: macBytes) {
+                    //res1.append(Integer.toHexString(b & 0xFF) + ":");
+                    res1.append(String.format("%02X:", b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {}
+        return "02:00:00:00:00:00";
     }
 
     public static String getRam() {
@@ -186,12 +214,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         actManager.getMemoryInfo(memInfo);
         long totalMemory = memInfo.totalMem;
-        return Long.toString(totalMemory);
+        return Long.toString(totalMemory/(1024*1024));
     }
 
-    public String getIMEI(){
-        Context context = ContextApp.getContext();
-        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        return telephonyManager.getDeviceId();
+    public static int getScreenWidth() {
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
+
+    public static int getScreenHeight() {
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    }
+
 }
