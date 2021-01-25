@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //String model = "gt-19505";
                 //String serialNumber = "serialNumber";
                 //String ramSize = "2048";
-                String dataStorageSize = "16384";
-                String displaySize = "5";
+                String dataStorageSize = "undefined";
+                String displaySize = getScreenWidth() +"x"+ getScreenHeight();
                 String macAddress = getMacAddr();
 
                 //mapping device
