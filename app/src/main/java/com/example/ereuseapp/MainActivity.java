@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         device_info_print.add("MAC Address: " + macAddress);
 
         //device_info_print.add("Serial Number: " );
-        device_info_print.add("RAM Size: " + getRam() + " GB");
+        device_info_print.add("RAM Size: " + getRam() + " MB");
 
         device_info_print.add("Display Size: " + getDisplaySize(MainActivity.this) + " Inches");
 
