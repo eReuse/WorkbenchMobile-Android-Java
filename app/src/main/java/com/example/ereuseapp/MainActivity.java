@@ -1,12 +1,18 @@
 package com.example.ereuseapp;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StatFs;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 
 
@@ -17,6 +23,7 @@ import retrofit2.Retrofit;
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
 import android.os.Build;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +44,7 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
@@ -82,11 +90,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         device_info_print.add("MAC Address: " + macAddress);
 
         //device_info_print.add("Serial Number: " );
-        device_info_print.add("RAM Size: " + getRam()+ " GB");
+        device_info_print.add("RAM Size: " + getRam() + " GB");
 
-        device_info_print.add("Display Size: " + getScreenWidth() +"x"+ getScreenHeight());
+        device_info_print.add("Display Size: " + getDisplaySize(MainActivity.this) + " Inches");
 
-        device_info_print.add("Data Storage: Undefined" );
+        device_info_print.add("Data Storage: " + getStorageSize() + " GB");
 
         for (int i = 0; i < device_info.size(); ++i)
             if (device_info.get(i) != null)
@@ -115,8 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //String model = "gt-19505";
                 //String serialNumber = "serialNumber";
                 //String ramSize = "2048";
-                int dataStorageSize = 1;
-                int displaySize = 20; //ponlo en pulgadas
+                int dataStorageSize = getStorageSize();
+                int displaySize = getDisplaySize(MainActivity.this); //ponlo en pulgadas
                 String macAddress = getMacAddr();
 
                 //mapping device
@@ -235,15 +243,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         actManager.getMemoryInfo(memInfo);
         long totalMemory = memInfo.totalMem;
-        return (int) (long)(totalMemory/(1024*1024));
+        return (int) ((long)(totalMemory/(1024*1024*1024)))+1;
     }
 
-    public static int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
+    public static int getDisplaySize(Activity activity) {
+            double x = 0, y = 0;
+            int mWidthPixels, mHeightPixels;
+            try {
+                WindowManager windowManager = activity.getWindowManager();
+                Display display = windowManager.getDefaultDisplay();
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                display.getMetrics(displayMetrics);
+                Point realSize = new Point();
+                Display.class.getMethod("getRealSize", Point.class).invoke(display, realSize);
+                mWidthPixels = realSize.x;
+                mHeightPixels = realSize.y;
+                DisplayMetrics dm = new DisplayMetrics();
+                activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+                x = Math.pow(mWidthPixels / dm.xdpi, 2);
+                y = Math.pow(mHeightPixels / dm.ydpi, 2);
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return (int) Math.sqrt(x + y);
     }
 
-    public static int getScreenHeight() {
-        return Resources.getSystem().getDisplayMetrics().heightPixels;
+    public int getStorageSize() {
+        StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getAbsolutePath());
+        long blockSize = stat.getBlockSizeLong();
+        long totalBlocks = stat.getBlockCountLong();
+        long total = totalBlocks*blockSize;
+        long totalGB =  total+1/ (1024*1024*1024);
+        return (int) totalGB;
     }
+
 
 }
