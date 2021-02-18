@@ -13,14 +13,14 @@ import java.util.Vector;
 public class User {
 
     //@Expose
-    private Map<String, String> device;
+    private Map<String, Object> device;
     private String type;
     private String uuid;
     private String software;
     private String version;
 
 
-    public User (String type, Map<String, String> device, String uuid, String software, String version){
+    public User (String type, Map<String, Object> device, String uuid, String software, String version){
         this.software = software;
         this.version = version;
         this.type = type;
@@ -44,7 +44,7 @@ public class User {
         return uuid;
     }
 
-    public Map<String,String> getDevice() {
+    public Map<String,Object> getDevice() {
         return device;
     }
 

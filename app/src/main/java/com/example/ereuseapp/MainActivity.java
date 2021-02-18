@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Call;
@@ -23,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import retrofit2.Callback;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -37,6 +41,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.Random;
+import java.util.logging.Level;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Vector<String> device_info_print = new Vector();
     private String Serial;
 
-    final String uuid = UUID.randomUUID().toString();
+    final String uuid= UUID.randomUUID().toString();
 
 
     @Override
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         device_info_print.add("Model: " + Build.MODEL);
 
         String macAddress = getMacAddr();
-        device_info_print.add("MAC Adress: " + macAddress);
+        device_info_print.add("MAC Address: " + macAddress);
 
         //device_info_print.add("Serial Number: " );
         device_info_print.add("RAM Size: " + getRam()+ " GB");
@@ -109,12 +115,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //String model = "gt-19505";
                 //String serialNumber = "serialNumber";
                 //String ramSize = "2048";
-                String dataStorageSize = "undefined";
-                String displaySize = getScreenWidth() +"x"+ getScreenHeight();
+                int dataStorageSize = 1;
+                int displaySize = 20; //ponlo en pulgadas
                 String macAddress = getMacAddr();
 
                 //mapping device
-                Map<String,String> device = new HashMap<String,String>();
+                Map<String,Object> device = new HashMap<String,Object>();
                 device.put("serialNumber",macAddress);
                 device.put("model",Build.MODEL);
                 device.put("manufacturer",Build.MANUFACTURER);
@@ -133,13 +139,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 executeSendJSON(json);
 
                 //Testing JSON format
-              /*JSONObject usertest = new JSONObject();
+                /*
+                JSONObject usertest = new JSONObject();
                 try {
                     usertest = new JSONObject(json);
                 } catch (JSONException e) {
 
                 }
-                Log.i("Current JSON",json);*/
+                Log.i("Current JSON",json);
+                */
 
                 break;
         }
@@ -147,13 +155,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void executeSendJSON(String json) {
+        //create OkHttp client
+        /* OkHttpClient.Builder okhttpClientBuilder = new OkHttpClient.Builder();
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+
+        okhttpClientBuilder.addInterceptor(logging);
+
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY); */
 
         //build
-        Retrofit retrofit = new Retrofit.Builder()
+        Retrofit.Builder builder = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl("https://api.testing.usody.com/usodybeta/")
-                .build();
+                /*.client(okhttpClientBuilder.build())*/;
+
+        Retrofit retrofit = builder.build();
+
         AppClient appClient = retrofit.create(AppClient.class);
 
         Call<Void> call = appClient.sendJson(json);
@@ -209,14 +228,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return "02:00:00:00:00:00";
     }
 
-    public static String getRam() {
+    public static int getRam() {
         Context context = ContextApp.getContext();
 
         ActivityManager actManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         actManager.getMemoryInfo(memInfo);
         long totalMemory = memInfo.totalMem;
-        return Long.toString(totalMemory/(1024*1024));
+        return (int) (long)(totalMemory/(1024*1024));
     }
 
     public static int getScreenWidth() {
