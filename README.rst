@@ -45,7 +45,7 @@ An internet connection.
 
 ### Installation
 
-1. Download the last APK available in the project section of this repository.
+1. Download the last APK available in the release section of this repository.
 2. Execute the APK from your smartphone device and install it.
 
 

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Vector<String> device_info_print = new Vector();
     private String Serial;
 
-    final String uuid= UUID.randomUUID().toString();
+    String uuid = UUID.randomUUID().toString();
 
 
     @Override
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 int dataStorageSize = getStorageSize();
                 int displaySize = getDisplaySize(MainActivity.this); //ponlo en pulgadas
                 String macAddress = getMacAddr();
+                uuid = UUID.randomUUID().toString();
 
                 //mapping device
                 Map<String,Object> device = new HashMap<String,Object>();
@@ -243,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ActivityManager.MemoryInfo memInfo = new ActivityManager.MemoryInfo();
         actManager.getMemoryInfo(memInfo);
         long totalMemory = memInfo.totalMem;
-        return (int) ((long)(totalMemory/(1024*1024*1024)))+1;
+        return (int) ((long)(totalMemory/(1024*1024)));
     }
 
     public static int getDisplaySize(Activity activity) {
@@ -274,7 +275,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         long blockSize = stat.getBlockSizeLong();
         long totalBlocks = stat.getBlockCountLong();
         long total = totalBlocks*blockSize;
-        long totalGB =  total+1/ (1024*1024*1024);
+        long totalGB =  total/ (1024*1024*1024);
         return (int) totalGB;
     }
 
