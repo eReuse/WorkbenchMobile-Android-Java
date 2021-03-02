@@ -13,7 +13,8 @@ import retrofit2.http.POST;
 public interface AppClient {
 
     @Headers({
-            "Authorization: Basic ODY5ODRlZTgtYTdjOC00ZjdiLWE1NWYtYWMyNzdmYTlmMjQxOg==",
+           // "Authorization: Basic ODY5ODRlZTgtYTdjOC00ZjdiLWE1NWYtYWMyNzdmYTlmMjQxOg==", //testing
+            "Authorization: Basic ZDk2Yjk5NDAtNmU3ZC00YjkxLWI1MjktMjZhZmIxMThhMWFjOg==", //production
             "Content-Type: application/json"
     })
     @POST("actions/")

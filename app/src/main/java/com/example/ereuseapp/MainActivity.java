@@ -177,7 +177,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Retrofit.Builder builder = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://api.testing.usody.com/usodybeta/")
+
+                //.baseUrl("https://api.testing.usody.com/usodybeta/") //testing
+                .baseUrl(" https://api.usody.com/usody/") //production
+
                 /*.client(okhttpClientBuilder.build())*/;
 
         Retrofit retrofit = builder.build();
