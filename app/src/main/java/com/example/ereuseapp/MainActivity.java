@@ -2,22 +2,14 @@ package com.example.ereuseapp;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.content.res.Resources;
 import android.graphics.Point;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
-import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
-
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.Call;
@@ -30,11 +22,6 @@ import android.widget.Toast;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.gson.Gson;
-
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import retrofit2.Callback;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
@@ -44,12 +31,9 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.Vector;
-import java.util.Random;
-import java.util.logging.Level;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -89,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String macAddress = getMacAddr();
         device_info_print.add("MAC Address: " + macAddress);
 
-        //device_info_print.add("Serial Number: " );
         device_info_print.add("RAM Size: " + getRam() + " MB");
 
         device_info_print.add("Display Size: " + getDisplaySize(MainActivity.this) + " Inches");
@@ -116,15 +99,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String software = "WorkbenchAndroid";
                 String version = "0.0.2";
                 String type = "Snapshot";
-
-                //dummy values
                 String typemobile = "Mobile";
-                //String manufacturer = "Samsung";
-                //String model = "gt-19505";
-                //String serialNumber = "serialNumber";
-                //String ramSize = "2048";
                 int dataStorageSize = getStorageSize();
-                int displaySize = getDisplaySize(MainActivity.this); //ponlo en pulgadas
+                int displaySize = getDisplaySize(MainActivity.this); //pulgadas
                 String macAddress = getMacAddr();
                 uuid = UUID.randomUUID().toString();
 
@@ -155,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException e) {
 
                 }
-                Log.i("Current JSON",json);
+                Log.i("JSON:",json);
                 */
 
                 break;
@@ -164,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void executeSendJSON(String json) {
-        //create OkHttp client
+        //create OkHttp client for log
         /* OkHttpClient.Builder okhttpClientBuilder = new OkHttpClient.Builder();
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

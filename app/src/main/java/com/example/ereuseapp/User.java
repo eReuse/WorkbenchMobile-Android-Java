@@ -1,14 +1,6 @@
 package com.example.ereuseapp;
 
-import com.google.gson.Gson;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import org.json.JSONObject;
-
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 public class User {
 
