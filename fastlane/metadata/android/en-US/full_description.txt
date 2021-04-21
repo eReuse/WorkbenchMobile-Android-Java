@@ -1,0 +1,1 @@
+This is an application created under the project eReuse.org that gets information about a smartphone device running Android and lets you send it to eReuse's Workbench with the goal to help recycling the device.
