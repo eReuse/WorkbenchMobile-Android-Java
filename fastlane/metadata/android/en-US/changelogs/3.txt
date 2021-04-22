@@ -1,0 +1,7 @@
+## [v0.0.3] - 22-04-21
+### Added
+- Fastlane metadata.
+- Application icon.
+
+### Changed
+- Cleaned unnecessary code.
