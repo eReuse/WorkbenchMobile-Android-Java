@@ -36,4 +36,4 @@ The app will ask permissions and show you your phone's data right after entering
 License
 -------
 
-Distributed under the GPLv3 License.
+Distributed under the A-GPL 3.0 License.
