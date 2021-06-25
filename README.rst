@@ -4,7 +4,7 @@ eReuse App
 About The Project
 *****************
 
-This is an Android application created under the project `eReuse.org <https://www.ereuse.org>`__. that gets information about a smartphone device running Android and lets you send it to Ereuse's WorkBench with the goal to help recycling the device.
+This is an Android application created under the project `eReuse.org <https://www.ereuse.org>`__. that gets information about a smartphone device running Android and lets you send it to Devicehub inventory with the goal to help recycling the device.
 The goal of Ereuse is reduce the amount of raw materials that has to be extracted from the land in order to build new devices. By streamlining the process of giving the components of an old device a new life, we're helping the planet.
 
 Getting Started
